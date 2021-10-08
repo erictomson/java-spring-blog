@@ -1,19 +1,45 @@
 package com.digitalhouse.blog.model;
 
-import java.sql.Date;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Date;
 
-public class Postagem {
+// Tornando a classe uma entidade gerenciavel
+// Esta entidade se tornará uma tabela no database
+@Entity
+// Necessário serializar a classe para que os dados
+// sejam trocadas de forma binária (e não objetos Java)
+@Table(name="tb_blog_model")    // Definindo o nome da tabela
+public class Postagem implements Serializable {
 
-    private long id;
+    // A cada instância, será gerado um identificador
+    // único para a classe
+    private static long serialVersionUID = 1L;
+
+    // Definindo a chave primária (PK)
+    @Id
+    // Gerando a chave primária
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name="post_titulo")     // Determinando o nome da tabela
+    @NotNull                        // Definindo como não nulo
+    @Size (min=5,max=100)           // Limites mínimo e máximo de caracteres
     private String titulo;
+    @Column(name="post_texto")      // Determinando o nome da tabela
+    @NotNull                        // Definindo como não nulo
+    @Size (min=5,max=500)           // Limites mínimo e máximo de caracteres
     private String texto;
-    private Date date = new Date(System.currentTimeMillis());
+    @Column(name="post_data")       // Determinando o nome da tabela
+    @Temporal(TemporalType.TIMESTAMP)   // Insere a data atual
+    private Date date = new java.sql.Date(System.currentTimeMillis());
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
